@@ -6,7 +6,7 @@ namespace bloom {
 	Scene::Scene(SceneManager & sceneManager) :
 		m_sceneManager(sceneManager),
 		m_gameInstance(sceneManager.m_gameInstance),
-		m_sceneRotateCenter(Coord().toSDLPoint(m_gameInstance.getRenderer()))
+		m_sceneRotateCenter(components::Position{}.toSDLPoint(m_gameInstance.getRenderer()))
 	{
 		m_sceneTexture = SDL_CreateTexture(m_gameInstance.getRenderer(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
 			m_gameInstance.getScreenWidth(),
@@ -67,7 +67,7 @@ namespace bloom {
 		return m_sceneRotateAngle;
 	}
 
-	void Scene::setSceneRotationCenter(Coord center) {
+	void Scene::setSceneRotationCenter(components::Position center) {
 		m_sceneRotateCenter = center.toSDLPoint(m_gameInstance.getRenderer());
 	}
 

@@ -37,6 +37,9 @@
     <Filter Include="Source Files\Scenes">
       <UniqueIdentifier>{dd833aec-1858-4a66-867e-60efaeeec2cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{a6e7b569-2e93-47f8-bae2-2799537b6900}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Timer.cpp">
@@ -84,9 +87,6 @@
     <ClCompile Include="src\Graphics\AnimationSet.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\Coord.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Systems\DefaultSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -95,6 +95,9 @@
     </ClCompile>
     <ClCompile Include="src\Scenes\SceneManager.cpp">
       <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\Position.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -114,12 +117,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Components\Components.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Components\Position.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Components\Size.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="include\Systems\DefaultSystem.h">
@@ -191,9 +188,6 @@
     <ClInclude Include="include\Components\Sprite.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="include\Coord.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Scenes\Scene.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
@@ -214,6 +208,12 @@
     </ClInclude>
     <ClInclude Include="include\StdStableSort.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Components\Size.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Components\Position.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

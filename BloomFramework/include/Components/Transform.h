@@ -1,13 +1,9 @@
 #pragma once
 
-#include "Coord.h"
+#include "Position.h"
+#include "Size.h"
 
 namespace bloom::components {
-	using Position = bloom::Coord;
-	struct Size {
-		int w, h;
-	};
-
 	struct Transform {
 		Position position;
 

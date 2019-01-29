@@ -26,7 +26,7 @@ namespace bloom::systems {
 				if (trans.size.h < 0)
 					trans.size.h = 0;
 
-				Coord actualPos = trans.position.getSDLPos(parentScene.getGameInstance().getRenderer(), trans.size.w, trans.size.h);
+				components::Position actualPos = trans.position.toAbsolute(parentScene.getGameInstance().getRenderer(), { trans.size.w, trans.size.h });
 				SDL_Rect destRect{
 					actualPos.x,
 					actualPos.y,

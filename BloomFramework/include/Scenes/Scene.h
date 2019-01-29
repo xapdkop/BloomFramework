@@ -8,9 +8,7 @@
 #include "StdStableSort.h"
 
 namespace bloom {
-	class BLOOMFRAMEWORK_API SceneManager;
-	struct BLOOMFRAMEWORK_API Coord;
-	
+	class BLOOMFRAMEWORK_API SceneManager;	
 	class BLOOMFRAMEWORK_API Scene {
 		using System = bloom::systems::DefaultSystem;
 		friend bloom::systems::System::System(bloom::Scene & sceneObject);
@@ -51,7 +49,7 @@ namespace bloom {
 		void setSceneRotation(double angle);
 		void adjustSceneRotation(double adjustment);
 		double getSceneRotation();
-		void setSceneRotationCenter(Coord center);
+		void setSceneRotationCenter(components::Position center);
 		void setSceneRotationCenter(SDL_Point center);
 
 		bool isLoaded() { return m_sceneLoaded; }

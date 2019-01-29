@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Framework.h"
 #include "NoRandomComponent.h"
 
@@ -11,65 +10,45 @@ class TestAnimChar : public bloom::GameObject {
 	using Animation = bloom::components::Animation;
 	using AnimationSet = bloom::components::AnimationSet;
 	using Transform = bloom::components::Transform;
-	using bloom::GameObject::GameObject;
-
+	using GameObject::GameObject;
 public:
 	void init() override {}
 
 	void init(const std::filesystem::path texturePath = "Assets/TestChar.png") {
-		Transform trans = { Position(0,0,bloom::relative), 0.0f, Size{256, 256} };
+		Transform trans = {Position{0, 0, bloom::components::Position::Type::relative}, 0.0, Size{256, 256}};
 		m_registry.assign<Transform>(m_entity, trans);
-
 		auto tmp = m_gameInstance.textures.load(texturePath);
-
-		m_registry.assign<Sprite>(m_entity, tmp, SDL_Rect{ 0,32,32,32 });
-
-
+		m_registry.assign<Sprite>(m_entity, tmp, SDL_Rect{0, 32, 32, 32});
 		// Seriously not the best way to initialize object animation.
-		AnimationPtr down{ std::make_shared<Animation>() };
+		AnimationPtr down{std::make_shared<Animation>()};
 		down->animationFrames = {
-			Sprite(tmp, SDL_Rect{ 0,32,32,32 }),
-			Sprite(tmp, SDL_Rect{ 32,32,32,32 }),
-			Sprite(tmp, SDL_Rect{ 0,32,32,32 }),
-			Sprite(tmp, SDL_Rect{ 64,32,32,32 })
+			Sprite(tmp, SDL_Rect{0, 32, 32, 32}), Sprite(tmp, SDL_Rect{32, 32, 32, 32}),
+			Sprite(tmp, SDL_Rect{0, 32, 32, 32}), Sprite(tmp, SDL_Rect{64, 32, 32, 32})
 		};
-
-
-		AnimationPtr up{ std::make_shared<Animation>() };
+		AnimationPtr up{std::make_shared<Animation>()};
 		up->animationFrames = {
-			Sprite(tmp, SDL_Rect{ 0,0,32,32 }),
-			Sprite(tmp, SDL_Rect{ 32,0,32,32 }),
-			Sprite(tmp, SDL_Rect{ 0,0,32,32 }),
-			Sprite(tmp, SDL_Rect{ 64,0,32,32 })
+			Sprite(tmp, SDL_Rect{0, 0, 32, 32}), Sprite(tmp, SDL_Rect{32, 0, 32, 32}),
+			Sprite(tmp, SDL_Rect{0, 0, 32, 32}), Sprite(tmp, SDL_Rect{64, 0, 32, 32})
 		};
-
-		AnimationPtr left{ std::make_shared<Animation>() };
+		AnimationPtr left{std::make_shared<Animation>()};
 		left->animationFrames = {
-			Sprite(tmp, SDL_Rect{ 0,64,32,32 }),
-			Sprite(tmp, SDL_Rect{ 32,64,32,32 }),
-			Sprite(tmp, SDL_Rect{ 0,64,32,32 }),
-			Sprite(tmp, SDL_Rect{ 64,64,32,32 })
+			Sprite(tmp, SDL_Rect{0, 64, 32, 32}), Sprite(tmp, SDL_Rect{32, 64, 32, 32}),
+			Sprite(tmp, SDL_Rect{0, 64, 32, 32}), Sprite(tmp, SDL_Rect{64, 64, 32, 32})
 		};
-
-		AnimationPtr right{ std::make_shared<Animation>() };
+		AnimationPtr right{std::make_shared<Animation>()};
 		right->animationFrames = {
-			Sprite(tmp, SDL_Rect{ 0,96,32,32 }),
-			Sprite(tmp, SDL_Rect{ 32,96,32,32 }),
-			Sprite(tmp, SDL_Rect{ 0,96,32,32 }),
-			Sprite(tmp, SDL_Rect{ 64,96,32,32 })
+			Sprite(tmp, SDL_Rect{0, 96, 32, 32}), Sprite(tmp, SDL_Rect{32, 96, 32, 32}),
+			Sprite(tmp, SDL_Rect{0, 96, 32, 32}), Sprite(tmp, SDL_Rect{64, 96, 32, 32})
 		};
-
 		up->setFrameTime(250);
 		down->setFrameTime(250);
 		left->setFrameTime(250);
 		right->setFrameTime(250);
-
 		AnimationSet animSet;
 		animSet.add("up", up);
 		animSet.add("down", down);
 		animSet.add("left", left);
 		animSet.add("right", right);
-
 		m_registry.assign<AnimationSet>(m_entity, animSet);
 		m_registry.assign<AnimationPtr>(m_entity, up);
 		m_registry.assign<NoRandomPos>(m_entity);
