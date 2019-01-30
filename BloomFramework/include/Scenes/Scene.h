@@ -7,29 +7,6 @@
 #include "Components/LayerGroup.h"
 #include "StdStableSort.h"
 
-template <typename T>
-class hasInit
-{
-	typedef char one;
-	typedef long two;
-
-	//using C++11 decltype - but it works with
-	//typeof or __typeof__ on GCC compiler
-	template <typename C>
-	static one test(decltype(&C::init));
-
-	template <typename C>
-	static two test(...);
-
-
-public:
-	static constexpr bool check()
-	{
-		return (sizeof(test<T>(0)) == sizeof(char));
-
-	}
-};
-
 
 namespace bloom {
 	class BLOOMFRAMEWORK_API SceneManager;
@@ -92,13 +69,19 @@ namespace bloom {
 		SDL_Point m_sceneRotateCenter;
 
 		bool m_sceneLoaded = false;
+
+		template <typename T>
+		static constexpr bool has_init(decltype(&T::init)) { return true; }
+
+		template <typename T>
+		static constexpr bool has_init(...) { return false; }
 	};
 
 	template<typename GO, typename... TArgs> void Scene::addGameObject(const std::string & tag, TArgs &&... initArgs) {
 		static_assert(std::is_base_of_v<GameObject, GO>, "Type GO passed in is not GameObject based");
+		static_assert(has_init<GO>(0), "Type GO passed in does not have valid init function.");
 
 		GO* obj = new GO(m_registry, m_gameInstance);
-		static_assert(hasInit<GO>::check(), "Type GO passed in does not have valid init function.");
 		obj->init(std::forward<TArgs>(initArgs)...);
 
 		m_gameObjects.emplace(tag, std::unique_ptr<GO>(obj));

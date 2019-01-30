@@ -7,6 +7,11 @@
 #include "GameObjectTest/TestAnimatedGameObject.h"
 #include "GameObjectTest/AnimationChangerSystem.h"
 
+class TestTest : public bloom::GameObject {
+public:
+	using GameObject::GameObject;
+};
+
 class TestScene : public bloom::Scene {
 	using RenderSystem = bloom::systems::RenderSystem;
 	using Position = bloom::components::Position;
@@ -27,6 +32,7 @@ public:
 		addGameObject<TestChar>("testSprite2", Position(0, 0, bloom::relative), Size{ 128, 128 }, testCharPath, SDL_Rect{ 0, 0, 32, 32 }, 2);
 		addGameObject<TestChar>("testGO", Position(50, 50, bloom::relative, (bloom::middle | bloom::right)), Size{ 256, 256 }, testCharPath, SDL_Rect{ 64, 96, 32, 32 }, 3);
 		addGameObject<TestAnimChar>("testAnimatedSprite", testCharPath);
+		//addGameObject<TestTest>("testAnimatedSprite"); //class without init func
 
 		registerSystem<RandomPositionSystem>()->enabled = false; // Still wonky because of Coord change. We also don't want to start it immediately.
 		registerSystem<RenderSystem>();
