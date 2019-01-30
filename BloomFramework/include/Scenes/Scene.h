@@ -7,7 +7,6 @@
 #include "Components/LayerGroup.h"
 #include "StdStableSort.h"
 
-
 namespace bloom {
 	class BLOOMFRAMEWORK_API SceneManager;
 	struct BLOOMFRAMEWORK_API Coord;
@@ -29,7 +28,7 @@ namespace bloom {
 		Game & getGameInstance() { return m_gameInstance; }
 
 		//Game Object stuff
-		template<typename GO, typename... TArgs>
+		template<typename GO, typename = std::enable_if_t<std::is_base_of_v<GameObject, GO>>, typename... TArgs>
 		void addGameObject(const std::string & tag, TArgs &&... initArgs);
 
 		void destroyGameObject(const std::string & tag);
@@ -37,15 +36,15 @@ namespace bloom {
 		void destroyAllGameObjects();
 
 		// System stuff
-		template<typename S>
+		template<typename S, typename = std::enable_if_t<std::is_base_of_v<System, S>>>
 		std::shared_ptr<S> registerSystem();
 
-		template<typename S>
+		template<typename S, typename = std::enable_if_t<std::is_base_of_v<System, S>>>
 		void unregisterSystem();
 
 		void unregisterAllSystems();
 		
-		template<typename S>
+		template<typename S, typename = std::enable_if_t<std::is_base_of_v<System, S>>>
 		std::shared_ptr<S> getSystemPtr();
 
 		// Rotation stuff
@@ -77,8 +76,9 @@ namespace bloom {
 		static constexpr bool has_init(...) { return false; }
 	};
 
-	template<typename GO, typename... TArgs> void Scene::addGameObject(const std::string & tag, TArgs &&... initArgs) {
-		static_assert(std::is_base_of_v<GameObject, GO>, "Type GO passed in is not GameObject based");
+	template<typename GO, typename, typename... TArgs>
+	void Scene::addGameObject(const std::string & tag, TArgs &&... initArgs) {
+		//static_assert(std::is_base_of_v<GameObject, GO>, "Type GO passed in is not GameObject based");
 		static_assert(has_init<GO>(0), "Type GO passed in does not have valid init function.");
 
 		GO* obj = new GO(m_registry, m_gameInstance);
@@ -90,8 +90,9 @@ namespace bloom {
 	}
 
 	// System stuff
-	template<typename S> std::shared_ptr<S> Scene::registerSystem() {
-		static_assert (std::is_base_of_v<System, S>, "Type S passed in is not System based");
+	template<typename S, typename>
+	std::shared_ptr<S> Scene::registerSystem() {
+		//static_assert (std::is_base_of_v<System, S>, "Type S passed in is not System based");
 		if (auto v = std::find_if(m_systems.begin(), m_systems.end(),
 			[](auto & i) -> bool { return typeid(*i) == typeid(S); });
 			v == m_systems.end())
@@ -104,8 +105,9 @@ namespace bloom {
 		}
 	}
 
-	template<typename S> void Scene::unregisterSystem() {
-		static_assert (std::is_base_of_v<System, S>, "Type S passed in is not System based");
+	template<typename S, typename>
+	void Scene::unregisterSystem() {
+		//static_assert (std::is_base_of_v<System, S>, "Type S passed in is not System based");
 		if (auto v = std::find_if(m_systems.begin(), m_systems.end(),
 			[](auto & i) -> bool { return typeid(*i) == typeid(S); });
 			v != m_systems.end())
@@ -117,10 +119,10 @@ namespace bloom {
 		}
 	}
 
-	template<typename S>
+	template<typename S, typename>
 	std::shared_ptr<S> Scene::getSystemPtr()
 	{
-		static_assert (std::is_base_of_v<System, S>, "Type S passed in is not System based");
+		//static_assert (std::is_base_of_v<System, S>, "Type S passed in is not System based");
 		if (auto v = std::find_if(m_systems.begin(), m_systems.end(),
 			[](auto & i) -> bool { return typeid(*i) == typeid(S); });
 			v != m_systems.end())
