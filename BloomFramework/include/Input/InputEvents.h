@@ -76,8 +76,8 @@ namespace bloom::input {
 		void set(const SDL_MouseMotionEvent& mme) noexcept;
 		void set(const SDL_MouseWheelEvent& mwe) noexcept;
 
-		std::array<uint8_t, static_cast<size_t>(MouseButton::MOUSE_MAX)> m_mouse{};
-		std::bitset<static_cast<size_t>(MouseButton::MOUSE_MAX)> m_stateChanged{ 0 };
+		std::array<uint8_t, static_cast<size_t>(MouseButton::MOUSE_SIZE)> m_mouse{};
+		std::bitset<static_cast<size_t>(MouseButton::MOUSE_SIZE)> m_stateChanged{ 0 };
 
 		// TODO: ise Point instead of pair here
 		Coordinates m_pos{ 0, 0 },

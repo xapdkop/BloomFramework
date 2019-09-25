@@ -3,7 +3,7 @@
 namespace bloom::input {
 	constexpr bool checkKey(bool lockState, KeyboardKey key) { return !lockState && key != KeyboardKey::KEYBOARD_SIZE; }
 	
-	constexpr bool checkButton(bool lockState, MouseButton button) { return !lockState && button != MouseButton::MOUSE_MAX; }
+	constexpr bool checkButton(bool lockState, MouseButton button) { return !lockState && button != MouseButton::MOUSE_SIZE; }
 	
 	constexpr bool isLockKey(SDL_Scancode key) {
 		return key == SDL_SCANCODE_CAPSLOCK || key == SDL_SCANCODE_NUMLOCKCLEAR || key == SDL_SCANCODE_SCROLLLOCK;
@@ -47,19 +47,19 @@ namespace bloom::input {
 	}
 
 	bool KeyboardEvent::shift() const noexcept {
-		return (isPressed(KeyboardKey::KEY_LEFT_SHIFT) || isPressed(KeyboardKey::KEY_RIGHT_SHIFT));
+		return (isPressed(KeyboardKey::LShift) || isPressed(KeyboardKey::RShift));
 	}
 
 	bool KeyboardEvent::ctrl() const noexcept {
-		return (isPressed(KeyboardKey::KEY_LEFT_CTRL) || isPressed(KeyboardKey::KEY_RIGHT_CTRL));
+		return (isPressed(KeyboardKey::LCtrl) || isPressed(KeyboardKey::RCtrl));
 	}
 
 	bool KeyboardEvent::alt() const noexcept {
-		return (isPressed(KeyboardKey::KEY_LEFT_ALT) || isPressed(KeyboardKey::KEY_RIGHT_ALT));
+		return (isPressed(KeyboardKey::LAlt) || isPressed(KeyboardKey::RAlt));
 	}
 
 	bool KeyboardEvent::capsLock() const noexcept {
-		return isPressed(KeyboardKey::KEY_CAPSLOCK);
+		return isPressed(KeyboardKey::CapsLock);
 	}
 
 	bool KeyboardEvent::isPrintable(SDL_Keycode key) noexcept {
