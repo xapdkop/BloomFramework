@@ -171,14 +171,6 @@ namespace bloom::input {
 	}
 
 	void MouseEvent::set(const SDL_MouseButtonEvent & mbe) noexcept {
-		//switch (mbe.state) {
-		//case SDL_PRESSED:
-		//	m_mouse[mbe.button] = mbe.clicks;
-		//	break;
-		//case SDL_RELEASED:
-		//	m_mouse[mbe.button] = 0;
-		//	break;
-		//}
 		if (static_cast<bool>(m_mouse[mbe.button]) != static_cast<bool>(mbe.state))
 			m_stateChanged.set(mbe.button);
 		m_mouse[mbe.button] = mbe.state ? mbe.clicks : 0;
@@ -191,7 +183,6 @@ namespace bloom::input {
 	}
 
 	void MouseEvent::set(const SDL_MouseWheelEvent & mwe) noexcept {
-		//reset();
 		m_scroll.x = mwe.x; m_scroll.y = mwe.y;
 	}
 }
