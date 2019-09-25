@@ -1,13 +1,15 @@
 #include "Input/InputEvents.h"
 
-// checks keyboard key
-#define checkKey(lockState, key) (!(lockState) && (key) != bloom::input::KeyboardKey::KEYBOARD_SIZE)
-// checks mouse button
-#define checkBtn(lockState, btn) (!(lockState) && (btn) != bloom::input::MouseButton::MOUSE_MAX)
-
-#define isLockKey(key) ((key) == SDL_SCANCODE_CAPSLOCK || (key) == SDL_SCANCODE_NUMLOCKCLEAR || (key) == SDL_SCANCODE_SCROLLLOCK)
-
 namespace bloom::input {
+	constexpr bool checkKey(bool lockState, KeyboardKey key) { return !lockState && key != KeyboardKey::KEYBOARD_SIZE; }
+	
+	constexpr bool checkButton(bool lockState, MouseButton button) { return !lockState && button != MouseButton::MOUSE_MAX; }
+	
+	constexpr bool isLockKey(SDL_Scancode key) {
+		return key == SDL_SCANCODE_CAPSLOCK || key == SDL_SCANCODE_NUMLOCKCLEAR || key == SDL_SCANCODE_SCROLLLOCK;
+	}
+
+
 	KeyboardEvent::KeyboardEvent() noexcept {
 		int numKeys = 0;
 		const auto kb = SDL_GetKeyboardState(&numKeys);
@@ -119,13 +121,13 @@ namespace bloom::input {
 	}
 
 	uint8_t MouseEvent::isPressed(MouseButton button) const noexcept {
-		if (checkBtn(m_lockState, button))
+		if (checkButton(m_lockState, button))
 			return m_mouse[static_cast<size_t>(button)];
 		return 0;
 	}
 
 	bool MouseEvent::stateChanged(MouseButton button) const noexcept {
-		return (checkBtn(m_lockState, button)
+		return (checkButton(m_lockState, button)
 			&& m_stateChanged[static_cast<size_t>(button)]);
 	}
 
@@ -149,7 +151,7 @@ namespace bloom::input {
 		return m_scroll;
 	}
 
-	bool MouseEvent::isInside(const SDL_Rect & rectangle) const noexcept {
+	bool MouseEvent::isInside(const SDL_Rect& rectangle) const noexcept {
 		return ((m_pos.x >= rectangle.x)
 			&& (m_pos.x <= rectangle.x + rectangle.w)
 			&& (m_pos.y >= rectangle.y)
@@ -170,19 +172,19 @@ namespace bloom::input {
 		m_offset.x = 0; m_offset.y = 0;
 	}
 
-	void MouseEvent::set(const SDL_MouseButtonEvent & mbe) noexcept {
+	void MouseEvent::set(const SDL_MouseButtonEvent& mbe) noexcept {
 		if (static_cast<bool>(m_mouse[mbe.button]) != static_cast<bool>(mbe.state))
 			m_stateChanged.set(mbe.button);
 		m_mouse[mbe.button] = mbe.state ? mbe.clicks : 0;
 		m_pos.x = mbe.x; m_pos.y = mbe.y;
 	}
 
-	void MouseEvent::set(const SDL_MouseMotionEvent & mme) noexcept {
+	void MouseEvent::set(const SDL_MouseMotionEvent& mme) noexcept {
 		m_pos.x = mme.x; m_pos.y = mme.y;
 		m_offset.x = mme.xrel; m_offset.y = mme.yrel;
 	}
 
-	void MouseEvent::set(const SDL_MouseWheelEvent & mwe) noexcept {
+	void MouseEvent::set(const SDL_MouseWheelEvent& mwe) noexcept {
 		m_scroll.x = mwe.x; m_scroll.y = mwe.y;
 	}
 }
