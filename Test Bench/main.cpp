@@ -150,7 +150,7 @@ void test_drawer(const std::filesystem::path& dataDir) {
 
 	// Test SpriteText2
 	std::string deltaTimeText{ "fps: " };
-	
+
 	// If manual control of entities is required, this is the method to do so.
 	auto& testGOpos = testRegistry.get<Position>(testGO.getEntityID());
 
@@ -165,7 +165,18 @@ void test_drawer(const std::filesystem::path& dataDir) {
 
 		cursorPos.x = game->input.mouse.getX();
 		cursorPos.y = game->input.mouse.getY();
-		std::cout << game->input.keyboard.getPrintable();
+		switch (char sym = game->input.keyboard) {
+		case '\0':
+			break;
+		case '\b':
+			std::cout << "\b \b";
+			break;
+		case '\n': case '\r':
+			std::cout << "\r\n";
+			break;
+		default:
+			std::cout << sym;
+		}
 
 		// vvv	wasUp and wasDown testing	vvv
 		if (game->input.keyboard.wasDown(input::KeyboardKey::Num0))

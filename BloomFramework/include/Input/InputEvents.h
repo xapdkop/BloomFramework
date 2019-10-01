@@ -33,8 +33,29 @@ namespace bloom::input {
 		bool ctrl() const noexcept;
 		bool alt() const noexcept;
 		bool capsLock() const noexcept;
-		const std::string& getPrintableRef() const noexcept;
-		std::string getPrintable() const;
+		char toChar() const;
+
+		operator char() const {
+			return toChar();
+		}
+
+		class SymRecorder {
+			friend class KeyboardEvent;
+			
+		public:
+			void start() noexcept;
+			std::string stop();
+			void clear();
+			void cancel();
+			std::string transfer();
+			const std::string& get() const;
+			
+		private:
+			void append(char sym);
+			
+			bool m_state{ false };
+			std::string m_str{};
+		} recorder{};
 
 	private:
 		void reset();
@@ -44,7 +65,7 @@ namespace bloom::input {
 
 		std::bitset<static_cast<size_t>(KeyboardKey::KEYBOARD_SIZE)> m_keyboard{};
 		std::bitset<static_cast<size_t>(KeyboardKey::KEYBOARD_SIZE)> m_stateChanged{};
-		std::string m_printable{};
+		char m_char{'\0'};
 
 		bool m_lockState = false;
 	};

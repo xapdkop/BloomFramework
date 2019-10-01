@@ -2,9 +2,9 @@
 
 namespace bloom::input {
 	constexpr bool checkKey(bool lockState, KeyboardKey key) { return !lockState && key != KeyboardKey::KEYBOARD_SIZE; }
-	
+
 	constexpr bool checkButton(bool lockState, MouseButton button) { return !lockState && button != MouseButton::MOUSE_SIZE; }
-	
+
 	constexpr bool isLockKey(SDL_Scancode key) {
 		return key == SDL_SCANCODE_CAPSLOCK || key == SDL_SCANCODE_NUMLOCKCLEAR || key == SDL_SCANCODE_SCROLLLOCK;
 	}
@@ -72,16 +72,12 @@ namespace bloom::input {
 		m_keyboard.set(SDL_SCANCODE_NUMLOCKCLEAR, mod & KMOD_NUM);
 	}
 
-	const std::string& KeyboardEvent::getPrintableRef() const noexcept {
-		return m_printable;
-	}
-
-	std::string KeyboardEvent::getPrintable() const {
-		return m_printable;
+	char KeyboardEvent::toChar() const {
+		return m_char;
 	}
 
 	void KeyboardEvent::reset() {
-		m_printable.clear();
+		m_char = '\0';
 		updateModKeys();
 		m_stateChanged.reset();
 	}
@@ -99,14 +95,41 @@ namespace bloom::input {
 			m_keyboard.set(kbe.keysym.scancode, kbe.state);
 		}
 		if (kbe.state && isPrintable(kbe.keysym.sym)) {
-			if (kbe.keysym.sym == SDLK_BACKSPACE)
-				m_printable += "\b ";
-			m_printable += static_cast<char>(kbe.keysym.sym);
+			m_char = static_cast<char>(kbe.keysym.sym);
 			if ((shift() || capsLock()) && kbe.keysym.sym >= SDLK_a && kbe.keysym.sym <= SDLK_z)
-				m_printable.back() -= ('a' - 'A');
+				m_char -= ('a' - 'A');
+			recorder.append(m_char);
 		}
 	}
 
+	void KeyboardEvent::SymRecorder::start() noexcept { m_state = true; }
+
+	void KeyboardEvent::SymRecorder::cancel() { m_state = false; m_str.clear(); }
+
+	std::string KeyboardEvent::SymRecorder::transfer() { return std::move(m_str); }
+
+	const std::string& KeyboardEvent::SymRecorder::get() const { return m_str; }
+
+	std::string KeyboardEvent::SymRecorder::stop() { m_state = false; return std::move(m_str); }
+
+	void KeyboardEvent::SymRecorder::clear() { m_str.clear(); }
+
+	void KeyboardEvent::SymRecorder::append(char sym) {
+		if (m_state) {
+			switch (sym) {
+			case '\0':
+				break;
+			case '\r': case '\n':
+				m_str += "\r\n";
+			case '\b':
+				if (!m_str.empty())
+					m_str.pop_back();
+				break;
+			default:
+				m_str.push_back(sym);
+			}
+		}
+	}
 
 
 	MouseEvent::MouseEvent() noexcept {
