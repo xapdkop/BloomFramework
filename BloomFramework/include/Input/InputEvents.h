@@ -33,6 +33,7 @@ namespace bloom::input {
 		bool ctrl() const noexcept;
 		bool alt() const noexcept;
 		bool capsLock() const noexcept;
+		const std::string& getPrintableRef() const noexcept;
 		std::string getPrintable() const;
 
 	private:
@@ -79,7 +80,6 @@ namespace bloom::input {
 		std::array<uint8_t, static_cast<size_t>(MouseButton::MOUSE_SIZE)> m_mouse{};
 		std::bitset<static_cast<size_t>(MouseButton::MOUSE_SIZE)> m_stateChanged{ 0 };
 
-		// TODO: ise Point instead of pair here
 		Coordinates m_pos{ 0, 0 },
 			m_offset{ 0, 0 },
 			m_scroll{ 0, 0 };

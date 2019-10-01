@@ -72,6 +72,10 @@ namespace bloom::input {
 		m_keyboard.set(SDL_SCANCODE_NUMLOCKCLEAR, mod & KMOD_NUM);
 	}
 
+	const std::string& KeyboardEvent::getPrintableRef() const noexcept {
+		return m_printable;
+	}
+
 	std::string KeyboardEvent::getPrintable() const {
 		return m_printable;
 	}
