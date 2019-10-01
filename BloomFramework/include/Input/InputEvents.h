@@ -42,9 +42,9 @@ namespace bloom::input {
 		static bool isPrintable(SDL_Keycode key) noexcept;
 		void updateModKeys();
 
-		std::bitset<static_cast<size_t>(KeyboardKey::KEYBOARD_SIZE)> m_keyboard{0};
-		std::bitset<static_cast<size_t>(KeyboardKey::KEYBOARD_SIZE)> m_stateChanged{ 0 };
-		std::string m_printable{ "" };
+		std::bitset<static_cast<size_t>(KeyboardKey::KEYBOARD_SIZE)> m_keyboard{};
+		std::bitset<static_cast<size_t>(KeyboardKey::KEYBOARD_SIZE)> m_stateChanged{};
+		std::string m_printable{};
 
 		bool m_lockState = false;
 	};

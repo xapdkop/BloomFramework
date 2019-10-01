@@ -172,8 +172,7 @@ namespace bloom::input {
 
 	void MouseEvent::reset() noexcept {
 		m_stateChanged.reset();
-		m_scroll.x = 0; m_scroll.y = 0;
-		m_offset.x = 0; m_offset.y = 0;
+		m_scroll.x = m_scroll.y = m_offset.x = m_offset.y = 0;
 	}
 
 	void MouseEvent::set(const SDL_MouseButtonEvent& mbe) noexcept {
