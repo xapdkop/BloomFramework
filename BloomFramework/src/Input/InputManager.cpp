@@ -22,11 +22,11 @@ namespace bloom::input {
 				break;
 		}
 		if (!caught)
-			m_lastType = EventType::NoEvent;
+			m_lastType = events::EventType::Empty;
 		return caught;
 	}
 
-	EventType InputManager::wait(int timeout) {
+	events::EventType InputManager::wait(int timeout) {
 		int caught;
 		if (timeout < 0)
 			caught = SDL_WaitEvent(&m_intlEvent);
@@ -35,19 +35,19 @@ namespace bloom::input {
 		if (caught)
 			handle();
 		else
-			m_lastType = EventType::NoEvent;
+			m_lastType = events::EventType::Empty;
 		return m_lastType;
 	}
 
 	void InputManager::handle() {
 		switch (m_intlEvent.type) {
 		case SDL_QUIT: {
-			m_lastType = EventType::QuitEvent;
+			m_lastType = events::EventType::Quit;
 			m_quitState = true;
 			break;
 		}
 		case SDL_KEYDOWN: case SDL_KEYUP: {
-			m_lastType = EventType::KeyboardEvent;
+			m_lastType = events::EventType::Keyboard;
 			keyboard.set(m_intlEvent.key);
 			//SDL_Keysym pressedKey = m_intlEvent.key.keysym;
 
@@ -63,7 +63,7 @@ namespace bloom::input {
 			break;
 		}
 		case SDL_MOUSEMOTION: {
-			m_lastType = EventType::MouseEvent;
+			m_lastType = events::EventType::Mouse;
 			mouse.set(m_intlEvent.motion);
 			//mouse.m_mouseX = m_intlEvent.motion.x;
 			//mouse.m_mouseY = m_intlEvent.motion.y;
@@ -72,20 +72,20 @@ namespace bloom::input {
 			break;
 		}
 		case SDL_MOUSEBUTTONDOWN: case SDL_MOUSEBUTTONUP: {
-			m_lastType = EventType::MouseEvent;
+			m_lastType = events::EventType::Mouse;
 			mouse.set(m_intlEvent.button);
 			//mouse.m_mouseState[m_intlEvent.button.button] = 1;
 			break;
 		}
 		case SDL_MOUSEWHEEL: {
-			m_lastType = EventType::MouseEvent;
+			m_lastType = events::EventType::Mouse;
 			mouse.set(m_intlEvent.wheel);
 			//mouse.m_scrollX = m_intlEvent.wheel.x;
 			//mouse.m_scrollY = m_intlEvent.wheel.y;
 			break;
 		}
 		default:
-			m_lastType = EventType::UnknownEvent;
+			m_lastType = events::EventType::Unknown;
 			break;
 		}
 	}

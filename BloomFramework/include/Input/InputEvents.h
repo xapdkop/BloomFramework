@@ -3,24 +3,19 @@
 #include "stdIncludes.h"
 #include <bitset>
 #include "InputDefinitions.h"
+#include "Event.h"
 #include "Components/Position.h"
 
 namespace bloom::input {
 	class BLOOMFRAMEWORK_API InputManager;
 
-	enum class EventType {
-		NoEvent,
-		QuitEvent,
-		KeyboardEvent,
-		MouseEvent,
-		UnknownEvent
-	};
-
-	class BLOOMFRAMEWORK_API KeyboardEvent {
+	class BLOOMFRAMEWORK_API KeyboardEvent : events::Event {
 		friend class InputManager;
 
 	public:
 		KeyboardEvent() noexcept;
+
+		events::EventType type() override;
 
 		bool wasDown(KeyboardKey key) const noexcept;
 		bool wasUp(KeyboardKey key) const noexcept;
@@ -70,13 +65,15 @@ namespace bloom::input {
 		bool m_lockState = false;
 	};
 
-	class BLOOMFRAMEWORK_API MouseEvent {
+	class BLOOMFRAMEWORK_API MouseEvent : events::Event {
 		friend class InputManager;
 
 	public:
 		using Coordinates = components::Position;
 
 		MouseEvent() noexcept;
+
+		events::EventType type() override;
 
 		bool wasDown(MouseButton button) const noexcept;
 		bool wasUp(MouseButton button) const noexcept;
