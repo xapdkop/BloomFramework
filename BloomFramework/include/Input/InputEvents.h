@@ -9,13 +9,11 @@
 namespace bloom::input {
 	class BLOOMFRAMEWORK_API InputManager;
 
-	class BLOOMFRAMEWORK_API KeyboardEvent : events::Event {
+	class BLOOMFRAMEWORK_API KeyboardEvent {
 		friend class InputManager;
 
 	public:
 		KeyboardEvent() noexcept;
-
-		events::EventType type() override;
 
 		bool wasDown(KeyboardKey key) const noexcept;
 		bool wasUp(KeyboardKey key) const noexcept;
@@ -50,7 +48,7 @@ namespace bloom::input {
 			
 			bool m_state{ false };
 			std::string m_str{};
-		} recorder{};
+		} symRecorder{};
 
 	private:
 		void reset();
@@ -65,15 +63,13 @@ namespace bloom::input {
 		bool m_lockState = false;
 	};
 
-	class BLOOMFRAMEWORK_API MouseEvent : events::Event {
+	class BLOOMFRAMEWORK_API MouseEvent {
 		friend class InputManager;
 
 	public:
 		using Coordinates = components::Position;
 
 		MouseEvent() noexcept;
-
-		events::EventType type() override;
 
 		bool wasDown(MouseButton button) const noexcept;
 		bool wasUp(MouseButton button) const noexcept;

@@ -182,6 +182,7 @@
     <ClInclude Include="include\Components\Size.h" />
     <ClInclude Include="include\Components\Sprite.h" />
     <ClInclude Include="include\Event.h" />
+    <ClInclude Include="include\EventRecorder.h" />
     <ClInclude Include="include\Graphics\AnimationSet.h" />
     <ClInclude Include="include\Graphics\Sprite.h" />
     <ClInclude Include="include\Exception.h" />

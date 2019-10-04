@@ -159,6 +159,8 @@ void test_drawer(const std::filesystem::path& dataDir) {
 
 	auto& cursorPos = testRegistry.get<Position>(cursor.getEntityID());
 
+	game->input.recorder.start();
+
 	while (game->isRunning()) {
 		testGOpos.x += testX;
 		testGOpos.y += testY;
@@ -236,6 +238,28 @@ void test_drawer(const std::filesystem::path& dataDir) {
 			game->delay(framedelay - frametime);
 		}
 	}
+	auto& rec = game->input.recorder;
+	for (size_t i = 0; i < rec.size(); ++i) {
+		auto val = rec.get(i);
+		std::visit([](auto&& arg) {
+			using T = std::decay_t<decltype(arg)>;
+			if constexpr (std::is_same_v<T, std::shared_ptr<events::QEvent>>)
+				std::cout << "Quit event" << std::endl;
+			else if constexpr (std::is_same_v<T, std::shared_ptr<events::KBEvent>>)
+				std::cout << "Keyboard Event: key: " << static_cast<int>(arg->key()) << "; state: " << arg->state() << std::endl;
+			else if constexpr (std::is_same_v<T, std::shared_ptr<events::MMEvent>>)
+				std::cout << "Mouse Motion Event: position: " << arg->position().x << ',' << arg->position().y << "; difference: " << arg->difference().x << ',' << arg->difference().y << std::endl;
+			else if constexpr (std::is_same_v<T, std::shared_ptr<events::MBEvent>>)
+				std::cout << "Mouse Button Event: button: " << static_cast<int>(arg->button()) << "; state: " << arg->state() << "; position: " << arg->position().x << ',' << arg->position().y << std::endl;
+			else if constexpr (std::is_same_v<T, std::shared_ptr<events::MWEvent>>)
+				std::cout << "Mouse Motion Event: scroll: " << arg->scroll().x << ',' << arg->scroll().y << "; direction: " << arg->direction() << std::endl;
+			else if constexpr (std::is_same_v<T, std::shared_ptr<events::Event>>)
+				std::cout << "Unknown event" << arg << std::endl;
+			else
+				static_assert(std::false_type::value, "non-exhaustive visitor!");
+			}, val);
+	}
+	
 	std::cout << std::endl;
 	game->destroy();
 }

@@ -44,48 +44,43 @@ namespace bloom::input {
 		case SDL_QUIT: {
 			m_lastType = events::EventType::Quit;
 			m_quitState = true;
+			if (recorder.state()) {
+				recorder._add(std::make_shared<events::QEvent>());
+			}
 			break;
 		}
 		case SDL_KEYDOWN: case SDL_KEYUP: {
 			m_lastType = events::EventType::Keyboard;
 			keyboard.set(m_intlEvent.key);
-			//SDL_Keysym pressedKey = m_intlEvent.key.keysym;
-
-			//keyboard.m_keyState[pressedKey.scancode] = 1;
-
-			//if (keyboard.isPrintable(pressedKey.sym)) {
-			//	if (pressedKey.sym == SDLK_BACKSPACE)
-			//		keyboard.m_char = "\b \b";
-			//	else
-			//		keyboard.m_char = pressedKey.sym;
-			//}
-
+			if (recorder.state())
+				recorder._add(std::make_shared<events::KBEvent>(m_intlEvent.key));
 			break;
 		}
 		case SDL_MOUSEMOTION: {
 			m_lastType = events::EventType::Mouse;
 			mouse.set(m_intlEvent.motion);
-			//mouse.m_mouseX = m_intlEvent.motion.x;
-			//mouse.m_mouseY = m_intlEvent.motion.y;
-			//mouse.m_mouseMoveX = m_intlEvent.motion.xrel;
-			//mouse.m_mouseMoveY = m_intlEvent.motion.yrel;
+			if (recorder.state())
+				recorder._add(std::make_shared<events::MMEvent>(m_intlEvent.motion));
 			break;
 		}
 		case SDL_MOUSEBUTTONDOWN: case SDL_MOUSEBUTTONUP: {
 			m_lastType = events::EventType::Mouse;
 			mouse.set(m_intlEvent.button);
-			//mouse.m_mouseState[m_intlEvent.button.button] = 1;
+			if (recorder.state())
+				recorder._add(std::make_shared<events::MBEvent>(m_intlEvent.button));
 			break;
 		}
 		case SDL_MOUSEWHEEL: {
 			m_lastType = events::EventType::Mouse;
 			mouse.set(m_intlEvent.wheel);
-			//mouse.m_scrollX = m_intlEvent.wheel.x;
-			//mouse.m_scrollY = m_intlEvent.wheel.y;
+			if (recorder.state())
+				recorder._add(std::make_shared<events::MWEvent>(m_intlEvent.wheel));
 			break;
 		}
 		default:
 			m_lastType = events::EventType::Unknown;
+			//if (recorder.state())
+			//	recorder._add(std::make_shared<events::UEvent>());
 			break;
 		}
 	}
@@ -111,7 +106,7 @@ namespace bloom::input {
 		return tmp;
 	}
 
-	//EventType InputManager::getType() const noexcept {
-	//	return m_lastType;
-	//}
+	events::EventType InputManager::lastEventType() const noexcept {
+		return m_lastType;
+	}
 }

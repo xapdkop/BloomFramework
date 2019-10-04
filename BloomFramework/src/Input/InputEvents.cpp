@@ -20,10 +20,6 @@ namespace bloom::input {
 		updateModKeys();
 	}
 
-	events::EventType KeyboardEvent::type() {
-		return events::EventType::Keyboard;
-	}
-
 	bool KeyboardEvent::wasDown(KeyboardKey key) const noexcept {
 		return (isPressed(key) && m_stateChanged[static_cast<size_t>(key)]);
 	}
@@ -102,7 +98,7 @@ namespace bloom::input {
 			m_char = static_cast<char>(kbe.keysym.sym);
 			if ((shift() || capsLock()) && kbe.keysym.sym >= SDLK_a && kbe.keysym.sym <= SDLK_z)
 				m_char -= ('a' - 'A');
-			recorder.append(m_char);
+			symRecorder.append(m_char);
 		}
 	}
 
@@ -141,10 +137,6 @@ namespace bloom::input {
 		for (size_t i = 1; i <= 3; ++i) {
 			m_mouse[i] = mouseState & SDL_BUTTON(i);
 		}
-	}
-
-	events::EventType MouseEvent::type() {
-		return events::EventType::Mouse;
 	}
 
 	bool MouseEvent::wasDown(MouseButton button) const noexcept {

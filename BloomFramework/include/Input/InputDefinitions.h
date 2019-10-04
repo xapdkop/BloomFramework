@@ -247,7 +247,7 @@ namespace bloom::input {
 		KEYBOARD_SIZE = SDL_NUM_SCANCODES // This defines the keyboard size
 	};
 
-	enum class MouseButton {
+	enum class MouseButton : uint8_t {
 		Left = SDL_BUTTON_LEFT,
 		Middle = SDL_BUTTON_MIDDLE,
 		Right = SDL_BUTTON_RIGHT,

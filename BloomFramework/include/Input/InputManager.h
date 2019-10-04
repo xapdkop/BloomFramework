@@ -5,6 +5,7 @@
 /// All keys are defined here.
 #include "InputEvents.h"
 #include "Event.h"
+#include "EventRecorder.h"
 
 namespace bloom::input {
 	class BLOOMFRAMEWORK_API InputManager {
@@ -16,9 +17,12 @@ namespace bloom::input {
 
 		void lock() noexcept;
 		void unlock() noexcept;
+		events::EventType lastEventType() const noexcept;
 
 		KeyboardEvent keyboard{};
 		MouseEvent mouse{};
+
+		events::EventRecorder<events::Event> recorder{};
 		
 	private:
 		void reset();
